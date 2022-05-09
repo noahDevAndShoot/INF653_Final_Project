@@ -8,15 +8,12 @@ var getStatesData = require('./config/statesData');
 var statesJson = getStatesData();
 const verify = require('./middleware/verifyState');
 const statesController = require('./controllers/statesController');
+const cors = require('cors');
 
 
 connectDB();
 
-
-
-mongoose.connection.once('open', () => {
-    console.log("We are connected to Mongo DB");
-});
+app.use(cors());
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
