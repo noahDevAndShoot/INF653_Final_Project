@@ -71,7 +71,7 @@ const getState = async (stateParam) => {
     var stateFunFacts = await State.findOne({stateCode: stateParam.toUpperCase()});
     if (!stateFunFacts)
     {
-        console.log("No fun facts found for state " + stateParam);
+        console.log("No Fun Facts found for " + state.state);
     }
     else
     {
@@ -125,7 +125,11 @@ const createNewFunfact = async (req, res) =>
 {
     if (!req?.body?.funfacts)
     {
-        res.status(400).json({"message": "Funfacts array required"});
+        res.status(400).json({"message": "State fun facts value required"});
+    }
+    else if (Array.isArray(req.body.funfacts))
+    {
+        res.status(400).json({"message": "State fun facts value must be an array"})
     }
     else
     {
@@ -149,23 +153,28 @@ const createNewFunfact = async (req, res) =>
 }
 
 const updateFunfact = async (req, res) => {
-    if (!req?.body?.funfact || !req?.body?.index)
+    if (!req?.body?.funfact)
     {
-        res.status(400).json({"message": "index and funfact data required."});
+        res.status(400).json({"message": "State fun fact index value required"});
+    }
+    else if (!req?.body?.index)
+    {
+        res.status(400).json({"message": "State fun fact value required"});
     }
     else
     {
+        var state = statesJson.find((state) => state.code == req.params.state.toUpperCase());
         var stateFunFacts = await State.findOne({stateCode: req.params.state.toUpperCase()});
         if (!stateFunFacts)
         {
-            res.status(404).json({"message": "No Fun Facts found for " + req.params.state})
+            res.status(404).json({"message": "No Fun Facts found for " + state.state});
         }
         else
         {
             let index = parseInt(req.body.index);
             if (index < 1 || index > stateFunFacts.funfacts.length)
             {
-                res.status(400).json({"message": "Invalid index"});
+                res.status(400).json({"message": "No fun fact found at that index for " + state.state});
             }
             else
             {
