@@ -97,7 +97,7 @@ const getStateCapital = async (req, res) => {
 
 const getStatePopulation = async (req, res) => {
     var state = await getState(req.params.state.toUpperCase());
-    res.json({"state": state.state, "population": state.population})
+    res.json({"state": state.state, "population": state.population.toLocaleString()})
 }
 
 const getStateAdmission = async (req, res) => {
@@ -209,7 +209,7 @@ const deleteFunfact = async (req, res) => {
             let index = parseInt(req.body.index);
             if (index < 1 || index > stateFunFacts.funfacts.length)
             {
-                res.status(400).json({"message": "Invalid index"});
+                res.status(400).json({"message": "No Fun Fact found at that index for " + state.state});
             }
             else
             {
