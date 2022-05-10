@@ -153,12 +153,12 @@ const createNewFunfact = async (req, res) =>
 }
 
 const updateFunfact = async (req, res) => {
-    if (!req?.body?.funfact)
+    if (!req?.body?.index)
     {
         res.status(400);
         res.json({'message': 'State fun fact index value required'});
     }
-    else if (!req?.body?.index)
+    else if (!req?.body?.funfact)
     {
         res.status(400);
         res.json({'message': 'State fun fact value required'});
@@ -194,14 +194,15 @@ const updateFunfact = async (req, res) => {
 const deleteFunfact = async (req, res) => {
     if (!req?.body?.index)
     {
-        res.status(400).json({"message": "index data required."});
+        res.status(400).json({"message": 'State fun fact index value required'});
     }
     else
     {
+        var state = statesJson.find((state) => state.code == req.params.state.toUpperCase());
         var stateFunFacts = await State.findOne({stateCode: req.params.state.toUpperCase()});
         if (!stateFunFacts)
         {
-            res.status(404).json({"message": "No Fun Facts found for " + req.params.state})
+            res.status(404).json({"message": "No Fun Facts found for " + state.state})
         }
         else
         {
