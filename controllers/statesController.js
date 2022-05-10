@@ -109,7 +109,7 @@ const getStateFunfact = async (req, res) => {
     var state = await getState(req.params.state.toUpperCase());
     if (!state.funfacts)
     {
-        res.json({"message": "No Fun facts found"});
+        res.json({"message": "No Fun Facts found for " + state.state});
     }
     else
     {
